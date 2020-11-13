@@ -10,6 +10,7 @@ const xss = require('xss-clean');
 const cors = require('cors');
 const errorResponse = require('./middleware/error');
 const PORT = process.env.PORT || 5000;
+const path = require('path');
 
 //Connecting database:
 db();
@@ -38,6 +39,14 @@ app.use('/api/post', post);
 app.use('/api/upload', upload);
 
 app.use(errorResponse);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.send(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`API running on PORT= ${PORT}`);

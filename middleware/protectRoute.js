@@ -20,7 +20,7 @@ exports.protectRoute = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwt.verify(token, process.env.jwtSecret);
     req.user = await User.findById(decoded.id);
     next();
   } catch (err) {

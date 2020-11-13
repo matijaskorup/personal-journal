@@ -35,7 +35,9 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.methods.getSignedJwt = function () {
-  return jwt.sign({ id: this._id }, jwtSecret, { expiresIn: 36000000 });
+  return jwt.sign({ id: this._id }, process.env.jwtSecret, {
+    expiresIn: 36000000,
+  });
 };
 
 UserSchema.methods.matchPassword = async function (enteredPassword) {
